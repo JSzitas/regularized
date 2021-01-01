@@ -1,0 +1,25 @@
+{
+    "id": "D3B9B144",
+    "path": "~/Desktop/regularized/R/common_functions.R",
+    "project_path": "R/common_functions.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1609541030282.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "tempName": "Untitled1",
+        "cursorPosition": "28,0",
+        "scrollLine": "25"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1609541196,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1609541196076,
+    "read_only": false,
+    "read_only_alternatives": []
+}

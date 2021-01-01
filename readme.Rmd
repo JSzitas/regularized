@@ -1,0 +1,20 @@
+---
+title: ""
+author: ""
+date: "1/1/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## regularized
+
+
+This repository is an attempt at a simple implementation of several regularisation methods. 
+
+Notably these include lasso, elasticnet (of which lasso is technically a special case), 
+MCP (minimax concave penalty) and SCAD (smoothly clipped absolute deviations). 
+
+Adaptive lasso and relaxed lasso will also be considered eventually. 

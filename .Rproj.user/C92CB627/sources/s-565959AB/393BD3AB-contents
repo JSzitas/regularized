@@ -1,0 +1,77 @@
+
+
+sorf <- function( X, d, scaling = 0.1, full = FALSE )
+{
+
+  D <- ncol(X)
+
+  hadamard_matrix_order <- ceiling(log(d, 2)) + 1
+  if( D > d )
+  {
+    repetitions <- ceiling(D/d) - 1
+    W <- sorf_features( hadamard_matrix_order, scaling = scaling )
+    while( repetitions > 0 )
+    {
+      W <- rbind(W, sorf_features(hadamard_matrix_order, scaling = scaling))
+      repetitions <- repetitions - 1
+    }
+    W <- W[1:D,]
+  }
+  else
+  {
+    # D < d
+    W <- sorf_features(hadamard_matrix_order, scaling = scaling)
+    W <- W[1:D,]
+  }
+
+  Z <- X %*% W
+
+  if (full) {
+    Z <- cbind(cos(Z), sin(Z))
+  } else {
+    Z <- apply( Z,MARGIN = 2,
+                FUN = function(i)
+                {
+                  return( i + (runif(1)*2 * pi))
+                })
+    Z <- cos( Z )
+  }
+  return(Z)
+}
+
+sorf_features <- function( d = 8, scaling = 0.1, n_spins = 3) {
+  h <- make_hadamard(d)
+  mul_res <- apply(h, MARGIN = 1, FUN = function(i) {
+    flip <- rradamacher(1)
+    return(i * flip)
+  })
+
+  if (n_spins > 1) {
+    mul_res <- fwht_cpp(mul_res)
+    mul_res <- apply(h, MARGIN = 1, FUN = function(i) {
+      flip <- rradamacher(1)
+      return(i * flip)
+    })
+  }
+
+  mul_res <- scaling * mul_res
+  return(mul_res)
+}
+
+# we need to generate the first hadamard matrix
+make_hadamard <- function(d) {
+  A <- matrix(1)
+
+  for (i in 2:d) {
+    A <- rbind(cbind(A, A), cbind(A, -A))
+  }
+
+  return(A)
+}
+
+
+rradamacher <- function(n) {
+  result <- rbinom(n, size = 1, prob = 0.5)
+  result[which(result == 0)] <- -1
+  return(result)
+}
