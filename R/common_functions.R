@@ -27,11 +27,24 @@ firm_threshold <- function( partial_estimate, lambda, gamma )
   return(partial_estimate)
 }
 
+scad_threshold <- function(partial_estimate, lambda, gamma)
+{
+  if(abs(partial_estimate) < 2*lambda)
+  {
+    return(soft_threshold(partial_estimate, lambda))
+  }
+  else if( abs(partial_estimate) > lambda*gamma)
+  {
+    return(partial_estimate)
+  }
+  return(soft_threshold(partial_estimate,lambda) * ((gamma-1)/(gamma-2)))
+}
+
 standardizer <- function( x )
 {
   if(is.vector(x) && is.numeric(x))
   {
-    x_mean <- mean(x)
+    mean_x <- mean(x)
     sd_x <- sd(x)
     x <- (x-mean_x)/sd_x
   }
@@ -50,6 +63,12 @@ standardizer <- function( x )
       return( (x[,i] - mean_x[i]) / sd_x[i])
     }))
     colnames(x) <- colnames_x
+    x <- as.matrix(x)
   }
-  return( list( x_scaled = as.matrix(x), mean_x = mean_x, sd_x = sd_x ) )
+  return( list( x_scaled = x, mean_x = mean_x, sd_x = sd_x ) )
+}
+
+unstandardizer <- function( x, standardizer_result )
+{
+  (x / standardizer_result[["sd_x"]])
 }
